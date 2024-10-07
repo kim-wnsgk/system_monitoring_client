@@ -1,25 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [cpuInfo, setCpuInfo] = useState('');
+
+    useEffect(() => {
+        // 서버로부터 CPU 정보를 가져옴
+        fetch('http://192.168.64.8:3001/cpu-info')
+            .then((response) => response.text())
+            .then((data) => {
+                setCpuInfo(data);
+            })
+            .catch((error) => {
+                console.error('Error fetching CPU info:', error);
+            });
+    }, []);
+
+    return (
+        <div>
+            <h1>Server CPU Info</h1>
+            <pre>{cpuInfo}</pre>
+        </div>
+    );
 }
 
 export default App;
